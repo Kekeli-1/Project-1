@@ -1,6 +1,12 @@
 select * from media.netflix1;
 select *, row_number() over (partition by type,show_id, director, date_added, country,title, release_year,rating,duration,listed_in ) as
 row_n from media.netflix1;
+delete from media.netflix1
+where(show_id, director, date_added, country,title, release_year,rating,duration,listed_in)  not in (select * from
+(select  min(show_id), min(director), min(date_added), min(country),min(title), min(release_year),min(rating),
+min(duration),min(listed_in) from media.netflix1
+group by show_id, director, date_added, country,title, release_year,rating,duration,listed_in) as sub);
+
 select * from media.netflix1
 where country = 'Pakistan';
 -- standardizing data
